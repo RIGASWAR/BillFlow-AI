@@ -91,6 +91,7 @@ The project integrates Machine Learning to improve business decision-making and 
 
 ## Backend
 - Python
+- Flask
 
 ## Database
 - Firebase Firestore
@@ -153,3 +154,49 @@ The system consists of:
 
 ```bash
 git clone https://github.com/RIGASWAR/BillFlow-AI.git
+```
+
+## Navigate to Project Folder
+
+```bash
+cd BillFlow-AI
+```
+
+## Install Backend Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+## Run Backend Server
+
+```bash
+python app.py
+```
+
+---
+
+# Future Enhancements
+
+- Online Payment Integration
+- Shipment Tracking
+- Advanced Analytics Dashboard
+- Mobile Application Support
+- Enhanced Cybersecurity Features
+- Deep Learning–Based Forecasting Models
+- Cloud Deployment
+
+---
+
+# Contributors
+
+- Preethi R
+- Rigaswar S
+- Syed Wasiq Hussain
+- Yugendharan A M
+
+---
+
+# License
+
+This project is developed for academic and research purposes under PSG College of Technology.
