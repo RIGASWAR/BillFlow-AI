@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parties | Vellore Spun Pipes</title>
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <style>
+        /* Responsive Form Layout */
+        #add-party-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* Responsive Table Wrapper */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            #add-party-form {
+                flex-direction: column;
+                align-items: stretch;
+                /* Make inputs full width */
+            }
+
+            input {
+                width: 100%;
+                /* Force inputs to fill container on mobile */
+                box-sizing: border-box;
+            }
+
+            button {
+                width: 100%;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <div class="sidebar">
+            <h2>Vellore<br>Spun Pipes</h2>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="parties.html" class="active">Parties</a></li>
+                <li><a href="items.html">Items</a></li>
+                <li><a href="sales.html">New Sale</a></li>
+                <li><a href="#" onclick="logoutUser()">Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <h3>Customer Management</h3>
+            </div>
+
+            <div class="card">
+                <h4>Add New Customer</h4>
+                <form id="add-party-form" style="margin-top:15px;">
+                    <input type="text" id="party-name" placeholder="Customer Name " required style="flex: 2;">
+                    <input type="text" id="party-phone" placeholder="Phone Number" style="flex: 1;">
+                    <input type="text" id="party-address" placeholder="Location / Address" style="flex: 2;">
+                    <button type="submit" class="btn-primary" style="white-space: nowrap; height: 42px;">+ Add
+                        Customer</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Registered Customers</h3>
+
+                <div class="table-responsive">
+                    <table class="party-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                                <th style="min-width: 120px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="parties-table-body">
+                            <tr>
+                                <td colspan="4">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="close-btn"
+                onclick="document.getElementById('historyModal').style.display='none'">&times;</span>
+            <h3 id="history-title" style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0;">Order
+                History</h3>
+
+            <div class="table-responsive" style="margin-top: 15px; max-height: 400px; overflow-y: auto;">
+                <table class="party-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Total Amount</th>
+                            <th>Invoice</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="static/js/api.js"></script>
+    <script src="static/js/auth.js"></script>
+    <script src="static/js/ui.js"></script>
+    <script>checkAuth();</script>
+
+
+</body>
+
+</html>

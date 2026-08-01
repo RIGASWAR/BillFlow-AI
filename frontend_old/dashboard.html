@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Vellore Spun Pipes</title>
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* ============================ */
+        /* PROFESSIONAL STOCK PANEL     */
+        /* ============================ */
+        .stock-alert-panel {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 380px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            border-left: 6px solid #dc3545;
+            animation: slideInRight 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(110%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .alert-header {
+            padding: 15px 20px;
+            background: #fff5f5;
+            border-top-right-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alert-header h4 {
+            margin: 0;
+            color: #dc3545;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .stock-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .qty-pill {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* STATUS BADGES */
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-Pending {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .status-Approved {
+            background: #cce5ff;
+            color: #00853c;
+            border: 1px solid #b8daff;
+        }
+
+        .status-Completed {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-Rejected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-Ready {
+            background: #d1ecf1;
+            color: #28a745;
+            border: 1px solid #bee5eb;
+        }
+
+        /* BUTTON STYLES FOR TABLE */
+        .btn-approve {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+
+        .btn-ready {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <div class="sidebar">
+            <h2>Vellore<br>Spun Pipes</h2>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="parties.html">Parties</a></li>
+                <li><a href="items.html">Items</a></li>
+                <li><a href="sales.html">New Sale</a></li>
+                <li><a href="#" onclick="logoutUser()">Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+
+            <div class="top-bar">
+                <h3>Admin Dashboard</h3>
+                <a href="sales.html" class="btn-primary">+ New Sale</a>
+            </div>
+
+            <div class="cards">
+                <div class="card">
+                    <p>Total Receivable</p>
+                    <h2 id="total-receivable">₹ 0</h2>
+                </div>
+                <div class="card">
+                    <p>Total Bills</p>
+                    <h2 id="total-bills">0</h2>
+                </div>
+                <div class="card">
+                    <p>Total Sales</p>
+                    <h2 id="total-sales">₹ 0</h2>
+                </div>
+                <div class="card">
+                    <p>Today's Sales</p>
+                    <h2 id="today-sales">₹ 0</h2>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 5px solid #ffc107;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 style="color: #d39e00;">Pending Approvals</h3>
+                    <span style="font-size:12px; color:#777;">Actions Required</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="party-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pending-orders-body">
+                            <tr>
+                                <td colspan="5">Loading requests...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 5px solid #007bff; margin-top: 20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+                    <h3 style="color: #0056b3;">Active Orders</h3>
+                    <input type="text" id="activeOrdersSearch" placeholder="Search orders..."
+                        onkeyup="if(typeof UI !== 'undefined' && UI.loadActiveOrders) UI.loadActiveOrders(1)"
+                        style="padding: 6px; border-radius: 4px; border: 1px solid #ccc; width:200px;">
+                </div>
+                <div class="table-responsive">
+                    <table class="party-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Status</th>
+                                <th>Next Step</th>
+                            </tr>
+                        </thead>
+                        <tbody id="active-orders-body">
+                            <tr>
+                                <td colspan="4">Loading active orders...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination Controls for Active Orders -->
+                <div id="active-pagination"
+                    style="display:flex; justify-content:space-between; align-items:center; margin-top:15px; border-top:1px solid #eee; padding-top:10px;">
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+                    <h3>Recent Sales & Orders</h3>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="salesSearch" placeholder="Search Customer..." onkeyup="searchSales()"
+                            style="padding: 8px; border-radius: 5px; border: 1px solid #ddd;">
+
+                        <select id="dateFilter" onchange="filterSales()"
+                            style="padding: 8px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; background: white;">
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="month">This Month</option>
+                            <option value="quarter">This Quarter</option>
+                            <option value="year">This Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="party-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Party Name</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sales-table-body">
+                            <tr>
+                                <td colspan="5">Loading sales data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div
+                    style="display: flex; justify-content: flex-end; align-items: center; padding-top: 15px; gap: 10px;">
+                    <button id="prev-btn" onclick="changePage(-1)" disabled
+                        style="padding: 5px 10px; cursor: pointer;">&lt; Prev</button>
+                    <span id="page-indicator" style="font-size: 14px; color: #666;">Page 1</span>
+                    <button id="next-btn" onclick="changePage(1)" disabled
+                        style="padding: 5px 10px; cursor: pointer;">Next &gt;</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px; border-left: 5px solid #28a745;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3>ML Demand Forecast</h3>
+                    <span
+                        style="font-size: 12px; background: #e8f5e9; padding: 5px 10px; border-radius: 15px; color: #2e7d32;">
+                        Powered by GAN & Random Forest
+                    </span>
+                </div>
+                <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                    Based on synthetic data generation from previous sales patterns.
+                </p>
+
+                <div class="table-responsive">
+                    <table class="party-table">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Predicted Qty Needed</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prediction-table-body">
+                            <tr>
+                                <td colspan="3">Loading predictions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="lowStockPanel" class="stock-alert-panel">
+        <div class="alert-header">
+            <h4>⚠️ Inventory Alert</h4>
+            <span onclick="closeAlert()" style="cursor:pointer; font-size:24px;">&times;</span>
+        </div>
+        <div id="panel-stock-list"></div>
+        <div style="padding: 15px 20px; text-align: right;">
+            <button class="btn-primary" onclick="window.location.href='items.html'" style="font-size: 12px;">
+                Manage Inventory
+            </button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script src="static/js/api.js"></script>
+    <script src="static/js/auth.js"></script>
+    <script src="static/js/ui.js"></script>
+
+    <script>
+        checkAuth();
+
+        function closeAlert() {
+            document.getElementById('lowStockPanel').style.display = 'none';
+        }
+
+        // --- UPDATED: PROFESSIONAL HANDLE ORDER ACTIONS ---
+        async function handleApprove(saleId) {
+            Swal.fire({
+                title: 'Approve Order?',
+                text: "Move this order to production?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, Approve'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const res = await API.updateOrderStatus(saleId, 'Approved');
+                    if (res.success) {
+                        Swal.fire({
+                            title: 'Approved!',
+                            text: 'Order sent to production.',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => location.reload());
+                    }
+                }
+            });
+        }
+
+        async function handleReject(saleId, itemsJson) {
+            Swal.fire({
+                title: 'Reject Order?',
+                text: "Stock will be returned to inventory. This cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, Reject It'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const items = JSON.parse(decodeURIComponent(itemsJson));
+                    const res = await API.updateOrderStatus(saleId, 'Rejected', items);
+                    if (res.success) {
+                        Swal.fire({
+                            title: 'Rejected',
+                            text: 'Order has been cancelled.',
+                            icon: 'error',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => location.reload());
+                    }
+                }
+            });
+        }
+
+        async function handleMarkReady(saleId) {
+            Swal.fire({
+                title: 'Mark as Ready?',
+                text: "Confirm that items are ready for dispatch?",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#17a2b8',
+                confirmButtonText: 'Yes, Ready'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const res = await API.updateOrderStatus(saleId, 'Ready');
+                    if (res.success) {
+                        Swal.fire({
+                            title: 'Ready!',
+                            text: 'Status updated to Ready for Dispatch.',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => location.reload());
+                    }
+                }
+            });
+        }
+
+        function filterSales() {
+            const filterValue = document.getElementById('dateFilter').value;
+            const rows = document.querySelectorAll('#sales-table-body tr');
+            const now = new Date();
+
+            rows.forEach(row => {
+                const dateCell = row.cells[0].innerText;
+                if (dateCell === "No sales found." || dateCell.includes("Loading")) return;
+
+                const rowDate = new Date(dateCell);
+                let show = false;
+
+                if (filterValue === "all") {
+                    show = true;
+                } else if (filterValue === "today") {
+                    show = rowDate.toDateString() === now.toDateString();
+                } else if (filterValue === "month") {
+                    show = rowDate.getMonth() === now.getMonth() && rowDate.getFullYear() === now.getFullYear();
+                } else if (filterValue === "year") {
+                    show = rowDate.getFullYear() === now.getFullYear();
+                } else if (filterValue === "quarter") {
+                    const currentQuarter = Math.floor(now.getMonth() / 3);
+                    const rowQuarter = Math.floor(rowDate.getMonth() / 3);
+                    show = (currentQuarter === rowQuarter) && (rowDate.getFullYear() === now.getFullYear());
+                }
+                row.style.display = show ? "" : "none";
+            });
+        }
+
+        let currentPage = 1;
+        let totalPages = 1;
+        let searchTimer = null;
+
+        function searchSales() {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                currentPage = 1;
+                loadSalesTable(1);
+            }, 300); // 300ms debounce
+        }
+
+        async function loadSalesTable(page) {
+            try {
+                const searchTerm = document.getElementById("salesSearch").value;
+                const data = await API.getSales(page, 10, searchTerm);
+                console.log("Sales Data:", data); // Debug
+
+                const sales = data.sales || [];
+                totalPages = data.total_pages || 1;
+                currentPage = data.current_page || 1;
+
+                const salesTable = document.getElementById("sales-table-body");
+                salesTable.innerHTML = "";
+
+                if (sales.length === 0) {
+                    salesTable.innerHTML = "<tr><td colspan='5'>No sales found.</td></tr>";
+                }
+
+                sales.forEach(sale => {
+                    const status = sale.status || "Completed";
+                    const row = `
+                    <tr>
+                        <td>${sale.created_at}</td>
+                        <td>${sale.party_name}</td>
+                        <td>₹ ${sale.total.toFixed(2)}</td>
+                        <td><span class="status-badge status-${status}">${status}</span></td>
+                        <td>
+                            <a href="${API_BASE_URL}/invoice_pdf/${sale.id}" target="_blank" class="btn-primary" style="padding: 6px 12px; font-size: 12px; text-decoration: none;">
+                                📄 PDF
+                            </a>
+                            <button onclick="if(typeof UI !== 'undefined') UI.sendWhatsApp('${sale.id}', '${sale.party_name}', '${sale.created_at}', ${sale.total})" class="btn-primary" style="padding:6px 12px; font-size:12px; background-color:#25D366; border:none; margin-left:5px;">
+                                💬 WA
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                    salesTable.innerHTML += row;
+                });
+
+                // Update Pagination UI
+                document.getElementById("page-indicator").innerText = `Page ${currentPage} of ${totalPages}`;
+                document.getElementById("prev-btn").disabled = currentPage <= 1;
+                document.getElementById("next-btn").disabled = currentPage >= totalPages;
+
+                // Update Stats (NOTE: Totals might be inaccurate now if backend doesn't return full sums. 
+                // For now, we will display totals based on the current page or remove them if needed. 
+                // Ideally, backend should return 'grand_total_sales' in metadata.
+                // For this iteration, we keep the existing stat update logic but it will only reflect the current page.)
+
+                // To fix stats properly, we need a separate API call for aggregated stats.
+                // For now, let's just calc based on current page to avoid "0"
+                // Extract global revenue if available, fallback to current page summation
+                let totalVal = data.global_revenue !== undefined ? data.global_revenue : sales.reduce((sum, s) => sum + (s.status !== 'Rejected' ? s.total : 0), 0);
+                document.getElementById("total-sales").innerText = `₹ ${totalVal.toFixed(2)}`;
+                document.getElementById("total-bills").innerText = data.total_items || sales.length;
+
+            } catch (err) { console.error("Sales Stats Error:", err); }
+        }
+
+        function changePage(delta) {
+            const newPage = currentPage + delta;
+            if (newPage > 0 && newPage <= totalPages) {
+                loadSalesTable(newPage);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            // 1. Load Sales History & Stats
+            await loadSalesTable(1);
+
+            // 2. Load Pending Approvals
+            try {
+                const pending = await API.getPendingOrders();
+                const pendingBody = document.getElementById("pending-orders-body");
+                pendingBody.innerHTML = "";
+
+                if (pending.length === 0) {
+                    pendingBody.innerHTML = "<tr><td colspan='5' style='text-align:center;'>No pending requests.</td></tr>";
+                } else {
+                    pending.forEach(order => {
+                        const itemsJson = encodeURIComponent(JSON.stringify(order.items));
+                        pendingBody.innerHTML += `
+                        <tr>
+                            <td>${order.created_at}</td>
+                            <td>${order.party_name}</td>
+                            <td style="font-size:11px;">${order.items_summary}</td>
+                            <td>₹${order.total}</td>
+                            <td>
+                                <button class="btn-approve" onclick="handleApprove('${order.id}')">Approve</button>
+                                <button class="btn-reject" onclick="handleReject('${order.id}', '${itemsJson}')">Reject</button>
+                            </td>
+                        </tr>`;
+                    });
+                }
+            } catch (err) { console.error("Pending Error:", err); }
+
+            // 3. Load Active Orders (Handled by UI object with pagination)
+            if (typeof UI !== 'undefined' && UI.loadActiveOrders) {
+                UI.loadActiveOrders(1);
+            }
+
+            // 4. Low Stock Logic
+            try {
+                const items = await API.getItems();
+                const lowStockItems = items.filter(item => item.stock < 20);
+
+                if (lowStockItems.length > 0) {
+                    const list = document.getElementById("panel-stock-list");
+                    list.innerHTML = "";
+                    lowStockItems.forEach(item => {
+                        list.innerHTML += `
+                        <div class="stock-item-row">
+                            <div>
+                                <div style="font-weight:600; font-size:13px;">${item.name}</div>
+                                <div style="font-size:11px; color: #777;">Stock critical</div>
+                            </div>
+                            <div class="qty-pill">${item.stock} left</div>
+                        </div>`;
+                    });
+                    document.getElementById('lowStockPanel').style.display = 'block';
+                }
+            } catch (err) { console.error("Stock Error:", err); }
+
+            // 5. Predictions Logic
+            try {
+                const data = await API.getPredictions();
+                const predictions = data.predictions || [];
+                const predTable = document.getElementById("prediction-table-body");
+                predTable.innerHTML = "";
+
+                if (!predictions || predictions.length === 0) {
+                    predTable.innerHTML = "<tr><td colspan='3' style='text-align:center'>Not enough data to generate predictions yet.</td></tr>";
+                } else {
+                    predictions.forEach(p => {
+                        const statusColor = p.predicted_qty > 50 ? "red" : "green";
+                        const statusText = p.predicted_qty > 50 ? "High Demand" : "Normal";
+                        predTable.innerHTML += `
+                        <tr>
+                            <td>${p.item_name}</td>
+                            <td>${p.predicted_qty} units</td>
+                            <td style="color:${statusColor}; font-weight:bold;">${statusText}</td>
+                        </tr>`;
+                    });
+                }
+            } catch (err) { console.error("ML Error", err); }
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Portal | Vellore Spun Pipes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        :root {
+            --primary-blue: #0052D4;
+            --secondary-blue: #4364F7;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            /* Shifting Blue Gradient Background */
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #0052D4);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        h2 {
+            color: #1a2a6c;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        h4 {
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        /* Modern Input Styling */
+        .input-group {
+            position: relative;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .input-group i.main-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            transition: color 0.3s ease;
+        }
+
+        /* Professional Eye Toggle */
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            z-index: 10;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-blue);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 45px 12px 42px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            background: #fff;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(0, 82, 212, 0.1);
+        }
+
+        .input-group input:focus+i.main-icon {
+            color: var(--primary-blue);
+        }
+
+        /* Button Styling */
+        .btn-action {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 15px -3px rgba(0, 82, 212, 0.3);
+            margin-top: 0.5rem;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            box-shadow: 0 10px 15px -3px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--primary-blue);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .toggle-btn:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card animate__animated animate__zoomIn">
+        <i class="fa-solid fa-industry fa-3x" style="color: var(--primary-blue); margin-bottom: 1rem;"></i>
+        <h2>Customer Portal</h2>
+        <p class="subtitle">Vellore Spun Pipes</p>
+
+        <div id="login-section" class="animate__animated animate__fadeIn">
+            <h4>Login to Order</h4>
+            <div class="input-group">
+                <i class="fa-solid fa-envelope main-icon"></i>
+                <input type="email" id="login-email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock main-icon"></i>
+                <input type="password" id="login-pass" placeholder="Password" required>
+                <i class="fa-solid fa-eye-slash password-toggle"
+                    onclick="togglePasswordVisibility('login-pass', this)"></i>
+            </div>
+            <button class="btn-action" onclick="Customer.login()">Login</button>
+            <p style="margin-top:1.5rem; font-size: 14px; color: #64748b;">
+                New here? <button class="toggle-btn" onclick="toggleAuth()">Create Account</button>
+            </p>
+        </div>
+
+        <div id="register-section" style="display:none;" class="animate__animated animate__fadeIn">
+            <h4>Register Company</h4>
+            <div class="input-group">
+                <i class="fa-solid fa-building main-icon"></i>
+                <input type="text" id="reg-name" placeholder="Company Name" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-envelope main-icon"></i>
+                <input type="email" id="reg-email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock main-icon"></i>
+                <input type="password" id="reg-pass" placeholder="Password" required>
+                <i class="fa-solid fa-eye-slash password-toggle"
+                    onclick="togglePasswordVisibility('reg-pass', this)"></i>
+            </div>
+            <button class="btn-action btn-register" onclick="Customer.register()">Register</button>
+            <p style="margin-top:1.5rem; font-size: 14px; color: #64748b;">
+                Already have an account? <button class="toggle-btn" onclick="toggleAuth()">Login</button>
+            </p>
+        </div>
+
+        <a href="index.html" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Selection
+        </a>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="static/js/api.js"></script>
+    <script src="static/js/customer.js"></script>
+
+    <script>
+        // Logic for Section Toggling
+        function toggleAuth() {
+            const login = document.getElementById('login-section');
+            const reg = document.getElementById('register-section');
+
+            if (login.style.display === 'none') {
+                reg.style.display = 'none';
+                login.style.display = 'block';
+                login.classList.add('animate__fadeIn');
+            } else {
+                login.style.display = 'none';
+                reg.style.display = 'block';
+                reg.classList.add('animate__fadeIn');
+            }
+        }
+
+        // Professional Password Toggle Logic
+        function togglePasswordVisibility(inputId, icon) {
+            const passwordInput = document.getElementById(inputId);
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Swap Eye Icons
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+
+            // Add click feedback animation
+            icon.classList.add('animate__animated', 'animate__pulse');
+            setTimeout(() => icon.classList.remove('animate__pulse'), 500);
+        }
+    </script>
+
+</body>
+
+</html>

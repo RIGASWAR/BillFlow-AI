@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Vellore Spun Pipes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        :root {
+            --admin-red: #eb3349;
+            --admin-dark: #1a2a6c;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            /* Shifting Admin Gradient (Red to Dark Blue) */
+            background: linear-gradient(-45deg, #1e3c72, #2a5298, #1a2a6c, #b21f1f);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            padding: 3rem 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 380px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--admin-dark);
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Modern Input Styling */
+        .input-group {
+            position: relative;
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        .input-group i.main-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            transition: color 0.3s ease;
+        }
+
+        /* Eye Toggle Logic */
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            z-index: 10;
+        }
+
+        .password-toggle:hover {
+            color: var(--admin-red);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 13px 45px 13px 45px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            background: #fff;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--admin-red);
+            box-shadow: 0 0 0 4px rgba(235, 51, 73, 0.1);
+        }
+
+        .input-group input:focus+i.main-icon {
+            color: var(--admin-red);
+        }
+
+        /* Admin Button Styling */
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 15px -3px rgba(235, 51, 73, 0.3);
+            margin-top: 1rem;
+        }
+
+        .btn-login:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 20px -5px rgba(235, 51, 73, 0.4);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Error Messaging */
+        .error-msg {
+            color: #ef4444;
+            background: #fef2f2;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-size: 0.85rem;
+            border: 1px solid #fee2e2;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--admin-dark);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card animate__animated animate__zoomIn">
+        <div class="animate__animated animate__fadeInDown animate__delay-1s">
+            <i class="fa-solid fa-user-shield fa-3x" style="color: var(--admin-red); margin-bottom: 1rem;"></i>
+            <h2>Admin Login</h2>
+            <p class="subtitle">Vellore Spun Pipes Management</p>
+        </div>
+
+        <div id="error-box" class="error-msg"></div>
+
+        <form id="login-form" class="animate__animated animate__fadeInUp animate__delay-1s">
+            <div class="input-group">
+                <i class="fa-solid fa-envelope main-icon"></i>
+                <input type="email" id="email" placeholder="Admin Email" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-lock main-icon"></i>
+                <input type="password" id="password" placeholder="Password" required>
+                <i class="fa-solid fa-eye-slash password-toggle" id="togglePassword"></i>
+            </div>
+
+            <button type="submit" id="login-btn" class="btn-login">Login to Dashboard</button>
+        </form>
+
+        <a href="index.html" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Portal Selection
+        </a>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="static/js/auth.js"></script>
+
+    <script>
+        // Password Visibility Logic
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordField = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+
+            // Subtle feedback animation
+            this.classList.add('animate__animated', 'animate__pulse');
+            setTimeout(() => this.classList.remove('animate__pulse'), 500);
+        });
+
+        // Your existing Firebase Logic
+        const loginForm = document.getElementById('login-form');
+        const errorBox = document.getElementById('error-box');
+        const loginBtn = document.getElementById('login-btn');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
+            loginBtn.disabled = true;
+            errorBox.style.display = "none";
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.href = "dashboard.html";
+                })
+                .catch((error) => {
+                    loginBtn.innerText = "Login to Dashboard";
+                    loginBtn.disabled = false;
+                    errorBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Invalid Credentials';
+                    errorBox.style.display = "block";
+                    errorBox.classList.add('animate__animated', 'animate__shakeX');
+                    setTimeout(() => errorBox.classList.remove('animate__shakeX'), 1000);
+                });
+        });
+    </script>
+</body>
+
+</html>
